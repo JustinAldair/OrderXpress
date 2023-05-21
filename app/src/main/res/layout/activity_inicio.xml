@@ -59,7 +59,7 @@
                 android:background="@android:color/transparent"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/Usuario"
+                android:hint="@string/Usuario"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -86,7 +86,7 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:drawableStart="@drawable/baseline_remove_red_eye_24"
-                android:text="@string/icontra"
+                android:hint="@string/icontra"
                 android:textSize="20sp"
                 android:background="@android:color/transparent"/>
 

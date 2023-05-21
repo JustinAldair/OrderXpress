@@ -53,7 +53,7 @@
                 android:background="@android:color/transparent"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/nombre"
+                android:hint="@string/nombre"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -76,7 +76,7 @@
                 android:drawableStart="@drawable/baseline_account_circle_24"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/Usuario"
+                android:hint="@string/Usuario"
                 android:textSize="20sp" />
 
         </LinearLayout>
@@ -100,7 +100,7 @@
                 android:drawableStart="@drawable/baseline_remove_red_eye_24"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/icontra"
+                android:hint="@string/icontra"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -124,7 +124,7 @@
                 android:background="@android:color/transparent"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/Correo"
+                android:hint="@string/Correo"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -145,8 +145,8 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="@string/numero"
+                android:inputType="phone"
+                android:hint="@string/numero"
                 android:textSize="20sp" />
 
         </LinearLayout>
@@ -168,10 +168,19 @@
                 android:layout_weight="1"
                 android:gravity="center">
 
+                <TextView
+                    android:id="@+id/tvTipoUsuario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/usuario"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
                 <CheckBox
                     android:id="@+id/cbRepartidor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:text="@string/tuRepartidor"
                     android:textAlignment="textEnd"
