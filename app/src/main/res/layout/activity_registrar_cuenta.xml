@@ -7,9 +7,6 @@
     android:background="@drawable/fondo3"
     tools:context=".registrarCuenta">
 
-
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,19 +14,16 @@
         <!---Titulo -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="118dp"
+            android:layout_height="80dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
             android:layout_marginRight="10dp"
             android:padding="20dp">
-
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="360dp"
-                android:layout_height="72dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center_horizontal"
                 android:text="@string/Registrate"
@@ -46,7 +40,6 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="30dp"
             android:layout_marginRight="25dp"
             android:background="@drawable/borde"
             android:orientation="horizontal"
@@ -60,29 +53,7 @@
                 android:background="@android:color/transparent"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/nombres"
-                android:textSize="20sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="25dp"
-            android:background="@drawable/borde"
-            android:orientation="horizontal"
-            android:padding="12dp">
-
-            <EditText
-                android:id="@+id/etApellidos"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="@string/apellidos"
+                android:text="@string/nombre"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -99,13 +70,37 @@
             <EditText
                 android:id="@+id/etUsuario"
                 android:layout_width="wrap_content"
-                android:drawableStart="@drawable/baseline_account_circle_24"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
+                android:drawableStart="@drawable/baseline_account_circle_24"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="@string/Usuario"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/borde"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <EditText
+                android:id="@+id/etPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:drawableStart="@drawable/baseline_remove_red_eye_24"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/icontra"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -121,19 +116,16 @@
             android:padding="12dp">
 
 
-
             <EditText
-                android:id="@+id/etCorreoElectronico"
+                android:id="@+id/etCorreo"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@android:color/transparent"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:drawableStart="@drawable/baseline_remove_red_eye_24"
-                android:text="@string/icontra"
-                android:textSize="20sp"
-                android:background="@android:color/transparent"/>
-
+                android:text="@string/Correo"
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -147,15 +139,15 @@
             android:padding="12dp">
 
             <EditText
-                android:id="@+id/etContraseña"
+                android:id="@+id/etNumero"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@android:color/transparent"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/Correo"
-                android:textSize="20sp"
-                android:background="@android:color/transparent"/>
+                android:text="@string/numero"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -166,17 +158,81 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginTop="0dp"
             android:orientation="vertical">
 
-            <CheckBox
-                android:id="@+id/checkBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/AceptoCondiciones"
-                android:layout_marginTop="20dp"
-                android:textAlignment="textEnd" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
 
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <CheckBox
+                    android:id="@+id/cbRepartidor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:text="@string/tuRepartidor"
+                    android:textAlignment="textEnd"
+                    android:textSize="16sp" />
+
+                <CheckBox
+                    android:id="@+id/cbPedidos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tuPedidos"
+                    android:textSize="16sp" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/yaTengo"
+                    android:layout_marginTop="10dp"
+                    android:textAlignment="textEnd" />
+
+                <TextView
+                    android:id="@+id/rdLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:onClick="cambiarLogin"
+                    android:text="@string/IniSec"
+                    android:textColor="#3D69BF"
+                    android:textStyle="bold|italic" /> />
+            </TableRow>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnRegistrarse"
+                android:layout_width="200dp"
+                android:layout_height="65dp"
+                android:backgroundTint="#3D69BF"
+                android:elevation="200dp"
+                android:onClick="irAInicio"
+                android:text="@string/registrarme"
+                android:textColor="@color/Blanco"
+                android:translationZ="200dp"
+                app:cornerRadius="100dp" />
         </LinearLayout>
 
     </LinearLayout>

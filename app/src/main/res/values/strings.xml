@@ -3,7 +3,7 @@
 
     <!-- Strings para: el inicio de sesion -->
     <string name="icorreo">Ingresa tu Correo</string>
-    <string name="icontra"> Ingresa tu Contraseña</string>
+    <string name="icontra"> Contraseña</string>
     <string name="IniSec">Iniciar Sesión</string>
     <string name="Registrate"> Registrate</string>
     <string name="AunNo">¿Aun no tengo cuenta? </string>
@@ -11,11 +11,15 @@
     <string name="Contraseña">Contraseña </string>
     <string name="Usuario"> Usuario </string>
     <string name="IniGoogle">Iniciar Sesión con Google </string>
+    <string name="AceptoCondiciones">Acepto Terminos y Condiciones</string>
 
     <!-- Strings para Registro: -->
-    <string name="nombres">Nombres</string>
-    <string name="apellidos">Apellidos</string>
-    <string name="AceptoCondiciones">Acepto Terminos y Condiciones</string>
+    <string name="nombre">Nombre</string>
+    <string name="numero">Teléfono</string>
+    <string name="tuRepartidor">Repartidor</string>
+    <string name="tuPedidos">Pedidos</string>
+    <string name="registrarme">Registrarme</string>
+    <string name="yaTengo">¿Ya tengo cuenta?</string>
 
 
     <!-- Strings para:-->

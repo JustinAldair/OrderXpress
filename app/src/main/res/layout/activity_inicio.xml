@@ -79,7 +79,7 @@
 
 
             <EditText
-                android:id="@+id/etContraseña"
+                android:id="@+id/etCorreo"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -110,11 +110,13 @@
                 android:textAlignment="textEnd" />
 
             <TextView
-                android:id="@+id/Registrate"
+                android:id="@+id/rediRegistrate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_weight="1"
+                android:onClick="cambiarRegistro"
                 android:text="@string/Registrate"
                 android:textColor="#3D69BF"
                 android:textStyle="bold|italic" />
