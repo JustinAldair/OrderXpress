@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +25,9 @@ private EditText nombre,usuario,password,correo,telefono;
         rediIniciarSesion=(TextView) findViewById(R.id.rdLogin);
 
         nombre=(EditText) findViewById(R.id.etNombre);
-        usuario=(EditText) findViewById(R.id.etUsuario);
+        usuario=(EditText) findViewById(R.id.etIUsuario);
         password=(EditText) findViewById(R.id.etPassword);
-        correo=(EditText) findViewById(R.id.etCorreo);
+        correo=(EditText) findViewById(R.id.etIPassword);
         telefono=(EditText) findViewById(R.id.etNumero);
 
         opc1= (CheckBox) findViewById(R.id.cbRepartidor);

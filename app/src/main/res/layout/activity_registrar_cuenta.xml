@@ -68,7 +68,7 @@
             android:padding="12dp">
 
             <EditText
-                android:id="@+id/etUsuario"
+                android:id="@+id/etIUsuario"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -117,7 +117,7 @@
 
 
             <EditText
-                android:id="@+id/etCorreo"
+                android:id="@+id/etIPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
