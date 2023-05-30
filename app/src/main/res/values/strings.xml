@@ -7,6 +7,8 @@
     <string name="IniSec">Iniciar Sesión</string>
     <string name="Registrate"> Registrate</string>
     <string name="AunNo">¿Aun no tengo cuenta? </string>
+    <string name="olviContra">¿Olvidaste la contraseña? </string>
+    <string name="recu">Recuperar </string>
     <string name="Correo"> Correo</string>
     <string name="Contraseña">Contraseña </string>
     <string name="Usuario"> Usuario </string>
@@ -22,6 +24,11 @@
     <string name="yaTengo">¿Ya tengo cuenta?</string>
     <string name="usuario">Tipo de usuario</string>
 
+    <!-- Strings para Solicitar Recuperar Cuenta -->
+    <string name="solicitarRecuperar">Recuperar Contraseña</string>
+    <string name="solicitarCorreo">Correo</string>
+    <string name="solicitarBoton">Solicitar</string>
+    <!-- Strings para Recuperar Cuenta -->
 
     <!-- Strings para:-->
 

@@ -40,6 +40,11 @@ public class Inicio extends AppCompatActivity {
         startActivity(cmRegistro);
         finish();
     }
+    public void recuperarContra(View view) {
+        Intent cmSoliContra = new Intent(getApplicationContext(),soliRecuperarCuenta.class);
+        startActivity(cmSoliContra);
+        finish();
+    }
 
     private void iniciarSesion(){
         String username = usuario.getText().toString().trim();

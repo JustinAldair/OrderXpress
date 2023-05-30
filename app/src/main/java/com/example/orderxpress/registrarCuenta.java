@@ -33,10 +33,39 @@ private EditText nombre,usuario,password,correo,telefono;
         opc1= (CheckBox) findViewById(R.id.cbRepartidor);
         opc2= (CheckBox) findViewById(R.id.cbPedidos);
 
+        opc1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    opc2.setChecked(false); // Desmarca opc2 si opc1 está seleccionada
+                    opc2.setEnabled(false); // Deshabilita opc2
+                } else {
+                    opc2.setEnabled(true); // Habilita opc2 cuando opc1 no está seleccionada
+                }
+            }
+        });
+
+        opc2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    opc1.setChecked(false); // Desmarca opc1 si opc2 está seleccionada
+                    opc1.setEnabled(false); // Deshabilita opc1
+                } else {
+                    opc1.setEnabled(true); // Habilita opc1 cuando opc2 no está seleccionada
+                }
+            }
+        });
+
+        // Deseleccionar ambas opciones CheckBox al iniciar esta interfaz
+        opc1.setChecked(false);
+        opc2.setChecked(false);
+
         Button btnRegistrar = findViewById(R.id.btnRegistrarse);
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 registrarUsuario();
             }
         });
@@ -83,30 +112,6 @@ private EditText nombre,usuario,password,correo,telefono;
             return;
         }
 
-        //Tipo de usuario
-        opc1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    opc2.setChecked(false); // Desmarca opc2 si opc1 está seleccionada
-                    opc2.setEnabled(false); // Deshabilita opc2
-                } else {
-                    opc2.setEnabled(true); // Habilita opc2 cuando opc1 no está seleccionada
-                }
-            }
-        });
-
-        opc2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    opc1.setChecked(false); // Desmarca opc1 si opc2 está seleccionada
-                    opc1.setEnabled(false); // Deshabilita opc1
-                } else {
-                    opc1.setEnabled(true); // Habilita opc1 cuando opc2 no está seleccionada
-                }
-            }
-        });
         String numeroTelefono = telefono.getText().toString().trim();
         if (numeroTelefono.length() != 10) {
             // Longitud del número de teléfono incorrecta, muestra un mensaje de error
