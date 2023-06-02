@@ -14,6 +14,15 @@
     <color name="AzulRey">#2d6073</color>
     <color name="AzulLago">#65b8a6</color>
     <color name="Verde">#b5e8c3</color>
+    <color name="Azulapp">#3D69BF</color>
+    <color name="AzulCielo">#3D69BF</color>
     <color name="melon">#f0f7da</color>
     <color name="Blanco">#f0f7da</color>
+    <color name="red">#EC4949</color>
+    <color name="claro">#05C6C1C1</color>
+    <color name="boton">#F8A19C9C</color>
+    <color name="Rosita">#F114B2</color>
+    <color name="azul">#368690</color>
+    <color name="gris">#BFD4D6</color>
+    <color name="lavanda">#6083C6</color>
 </resources>

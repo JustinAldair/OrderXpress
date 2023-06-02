@@ -1,7 +1,6 @@
 package com.example.orderxpress;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,10 +8,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class Inicio extends AppCompatActivity {
 
     private TextView rediRegistrate;
     private EditText usuario,password;
+
+    private Button btnIniciarSesion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +26,15 @@ public class Inicio extends AppCompatActivity {
 
         usuario=(EditText) findViewById(R.id.etIUsuario);
         password=(EditText) findViewById(R.id.etIPassword);
+        btnIniciarSesion = (Button) findViewById(R.id.btnIniciarSesion);
 
-        Button btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
 
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                iniciarSesion();
+            public void onClick(View view) {
+                Activity activity = (Activity) view.getContext();
+                Intent intent = new Intent(Inicio.this, MainActivityMenu.class);
+                startActivity(intent);
             }
         });
 
@@ -46,24 +51,26 @@ public class Inicio extends AppCompatActivity {
         finish();
     }
 
-    private void iniciarSesion(){
-        String username = usuario.getText().toString().trim();
-        String psw = password.getText().toString().trim();
+    //--private void iniciarSesion(){
+     //   String username = usuario.getText().toString().trim();
+       // String psw = password.getText().toString().trim();
 
         // Realiza las validaciones necesarias
-        if (username.isEmpty()) {
-            usuario.setError("Ingrese un nombre de usuario");
-            usuario.requestFocus();
-            return;
-        }else {
-            if (psw.isEmpty()) {
-                password.setError("Ingrese una contraseña");
-                password.requestFocus();
-                return;
-            } else {
+        //if (username.isEmpty()) {
+          //  usuario.setError("Ingrese un nombre de usuario");
+           // usuario.requestFocus();
+    //return;
+      //  }else {
+        //    if (psw.isEmpty()) {
+          //      password.setError("Ingrese una contraseña");
+            //    password.requestFocus();
+              //  return;
+           // } else {
                 // Validaciones exitosas, se puede iniciar sesion
 
-            }
-        }
-    }
+            ///}
+        //}
+    //}
+
+
 }
