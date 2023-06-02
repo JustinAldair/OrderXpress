@@ -101,7 +101,7 @@ public class MainActivityMenu extends AppCompatActivity implements NavigationVie
                 case R.id.nav_love:
                     replaceFragment(new FavoritoFragment());
                     LottieAnimationView loveView = new LottieAnimationView(this);
-                    loveView.setAnimation(R.raw.love);
+                    loveView.setAnimation(R.raw.ubication);
                     loveView.playAnimation();
                     FrameLayout loveLayout = findViewById(R.id.nav_love);
                     loveLayout.removeAllViews();
@@ -131,7 +131,7 @@ public class MainActivityMenu extends AppCompatActivity implements NavigationVie
                 case R.id.nav_perfil:
                     replaceFragment(new NotificacionesFragment());
                     LottieAnimationView profileView = new LottieAnimationView(this);
-                    profileView.setAnimation(R.raw.userss);
+                    profileView.setAnimation(R.raw.store);
                     profileView.playAnimation();
                     FrameLayout profileLayout = findViewById(R.id.nav_perfil);
                     profileLayout.removeAllViews();

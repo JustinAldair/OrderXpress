@@ -11,7 +11,7 @@
             android:title="Inicio"/>
         <item
             android:id="@+id/nav1_favorito"
-            android:icon="@drawable/ico_favorito"
+            android:icon="@drawable/location"
             android:title="Favoritos"/>
         <item
             android:id="@+id/nav1_notificaciones"
@@ -19,11 +19,11 @@
             android:title="Notificaciones"/>
         <item
             android:id="@+id/nav1_perfil"
-            android:icon="@drawable/ico_perfil"
-            android:title="Perfil"/>
+            android:icon="@drawable/baseline_store_24"
+            android:title="Tiendas"/>
     </group>
     <item
-        android:title="">
+        android:title="¿No es su cuenta?">
         <menu>
             <item
                 android:id="@+id/nav1_logout"
