@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fondo3"
+    android:background="@color/fondo"
     tools:context=".registrarCuenta">
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -73,7 +75,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:drawableStart="@drawable/baseline_account_circle_24"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:hint="@string/Usuario"
@@ -81,43 +82,58 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="25dp"
-            android:background="@drawable/borde"
-            android:orientation="horizontal"
-            android:padding="12dp">
 
-            <EditText
-                android:id="@+id/etPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:drawableStart="@drawable/baseline_remove_red_eye_24"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="@string/icontra"
-                android:textSize="20sp" />
-        </LinearLayout>
 
-        <LinearLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="25dp"
-            android:background="@drawable/borde"
-            android:orientation="horizontal"
-            android:padding="12dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/borde">
 
 
             <EditText
                 android:id="@+id/etIPassword"
+                android:layout_toStartOf="@+id/passwordicon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:hint="contraseña"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textSize="20sp"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                />
+
+
+            <ImageView
+                android:id="@+id/passwordicon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:padding="10dp"
+                android:src="@drawable/eyeoff"
+                android:adjustViewBounds="true"
+                android:layout_marginTop="20dp"/>
+            </RelativeLayout>
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/borde"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+
+            <EditText
+                android:id="@+id/etSRCCorreo"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -245,4 +261,6 @@
         </LinearLayout>
 
     </LinearLayout>
-</RelativeLayout>
+
+    </RelativeLayout>
+</ScrollView>

@@ -1,22 +1,27 @@
 package com.example.orderxpress;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class registrarCuenta extends AppCompatActivity {
 private TextView rediIniciarSesion;
 private Button btnRegistrar;
 private CheckBox opc1,opc2;
 private EditText nombre,usuario,password,correo,telefono;
+    private EditText edtLpassword;
+    private ImageView passwordIcon;
+    private boolean passwordVisible = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,12 +31,24 @@ private EditText nombre,usuario,password,correo,telefono;
 
         nombre=(EditText) findViewById(R.id.etNombre);
         usuario=(EditText) findViewById(R.id.etIUsuario);
-        password=(EditText) findViewById(R.id.etPassword);
-        correo=(EditText) findViewById(R.id.etIPassword);
+        password=(EditText) findViewById(R.id.etIPassword);
+        correo=(EditText) findViewById(R.id.etSRCCorreo);
         telefono=(EditText) findViewById(R.id.etNumero);
 
         opc1= (CheckBox) findViewById(R.id.cbRepartidor);
         opc2= (CheckBox) findViewById(R.id.cbPedidos);
+
+
+
+
+        edtLpassword = findViewById(R.id.etIPassword);
+        passwordIcon = findViewById(R.id.passwordicon);
+        passwordIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                togglePasswordVisibility(edtLpassword, passwordIcon);
+            }
+        });
 
         opc1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -124,6 +141,18 @@ private EditText nombre,usuario,password,correo,telefono;
 
         }
 
+    }
+
+    private void togglePasswordVisibility(EditText editText, ImageView icon) {
+        int inputType = editText.getInputType();
+        if (inputType == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            icon.setImageResource(R.drawable.eyeoff);
+        } else {
+            editText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            icon.setImageResource(R.drawable.eye);
+        }
+        editText.setSelection(editText.getText().length());
     }
 
 }
