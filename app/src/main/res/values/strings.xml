@@ -58,6 +58,8 @@
     <string name="txt_a">A: </string>
     <string name="btn_Convertir">Convertir</string>
 
+    <string name="tool_open">Open</string>
+    <string name="tool_close">Close</string>
 
     <!-- Strings para: -->
 </resources>

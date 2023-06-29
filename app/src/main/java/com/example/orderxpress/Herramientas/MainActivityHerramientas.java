@@ -132,7 +132,7 @@ public class MainActivityHerramientas extends AppCompatActivity implements Navig
         Toast.makeText(this, "Entro a seleccionar una", Toast.LENGTH_SHORT).show();
         switch (item.getItemId()) {
             case R.id.nav1_home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new HomeFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(androidx.fragment.R.id.fragment_container_view_tag, new HomeFragment()).commit();
                 navigationView.setCheckedItem(R.id.nav1_home);
                 break;
             case R.id.nav1_favorito:
