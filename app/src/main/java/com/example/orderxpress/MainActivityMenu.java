@@ -1,5 +1,8 @@
 package com.example.orderxpress;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,12 +15,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.orderxpress.Fragment.FavoritoFragment;
 import com.example.orderxpress.Fragment.HomeFragment;
 import com.example.orderxpress.Fragment.NotificacionesFragment;
+import com.example.orderxpress.Herramientas.MainActivityHerramientas;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivityMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -188,9 +193,44 @@ public class MainActivityMenu extends AppCompatActivity implements NavigationVie
             getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,new NotificacionesFragment()).commit();
         }
     }
+    private void cerrarSesion() {
 
+        // Limpiar preferencias
+        SharedPreferences preferences = getSharedPreferences("preferenciasLogin", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+
+        // Lanzar la actividad de inicio de sesión
+        Intent intent = new Intent(this, Inicio.class);
+        startActivity(intent);
+        finish();
+    }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+
+        switch (item.getItemId()){
+            case R.id.nav1_home:
+                onHeartClick();
+                break;
+            case R.id.nav1_favorito:
+                onChatsClick();
+                break;
+            case R.id.nav1_notificaciones:
+                onProfileClick();
+                break;
+            case R.id.nav1_her:
+                Intent intent = new Intent(this, MainActivityHerramientas.class);
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.nav1_logout:
+                cerrarSesion();
+                break;
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
+
+
 }
