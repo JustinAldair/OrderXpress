@@ -1,10 +1,16 @@
 package com.example.orderxpress.Herramientas;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.Toast;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -12,147 +18,223 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.ui.AppBarConfiguration;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.example.orderxpress.Fragment.FavoritoFragment;
 import com.example.orderxpress.Fragment.HomeFragment;
-import com.example.orderxpress.Fragment.NotificacionesFragment;
-import com.example.orderxpress.Fragment.PerfilFragment;
 import com.example.orderxpress.Herramientas.Calculadora.CalculadoraFragment;
 import com.example.orderxpress.Herramientas.Conversor.ConversorFragment;
 import com.example.orderxpress.Herramientas.Notas.NotasFragment;
+import com.example.orderxpress.Inicio;
+import com.example.orderxpress.MainActivityMenu;
 import com.example.orderxpress.R;
-import com.example.orderxpress.databinding.ActivityMainBinding;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivityHerramientas extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    DrawerLayout drawerLayout;
-    BottomNavigationView bottomNavigationView;
-    NavigationView navigationView;
+    private int selectedTab=1;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
-    private AppBarConfiguration mAppBarConfiguration;
-    private ActivityMainBinding binding;
+    private LinearLayout calculadoraLayout, conversorLayout, notasLayout;
+    private LottieAnimationView calculadoraAnimation, conversorAnimation, notasAnimation;
+    private TextView calculadoraTxt, conversorTxt, notasTxt;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_herramientas);
-        navigationView = findViewById(R.id.nav_view_herramientas);
-        Toolbar toolbar = findViewById(R.id.toolbar_herramientas);
-        drawerLayout = findViewById(R.id.drawer_layout_herramientas);
+        //Enlace de cada uno de los LinearLayouts necesarios
+        calculadoraLayout = findViewById(R.id.calculadoraLayout);
+        conversorLayout = findViewById(R.id.conversorLayout);
+        notasLayout =findViewById(R.id.notasLayout);
 
+        //Enlace de cada uno de las vistas de Lottie
+        calculadoraAnimation=findViewById(R.id.calculadoraAnimation);
+        conversorAnimation=findViewById(R.id.conversorAnimation);
+        notasAnimation=findViewById(R.id.notasAnimation);
+
+        //Enlace de cada uno de los campos de texto del menú
+        calculadoraTxt=findViewById(R.id.calculadoraTxt);
+        conversorTxt=findViewById(R.id.conversorTxt);
+        notasTxt=findViewById(R.id.notasTxt);
+
+        calculadoraLayout.setBackgroundResource(R.drawable.menu);
+        calculadoraTxt.setVisibility(View.VISIBLE);
+        calculadoraAnimation.playAnimation();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout2,new CalculadoraFragment()).commit();
+
+        calculadoraLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onHeartClick();
+            }
+        });
+
+        conversorLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onChatsClick();
+            }
+        });
+
+        notasLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onProfileClick();
+            }
+        });
+
+        Toolbar toolbar = findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav, R.string.close_nav);
+        drawerLayout = findViewById(R.id.drawer_layout2);
+        navigationView=findViewById(R.id.nav_view2);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar, R.string.tool_open,R.string.tool_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        drawerLayout = findViewById(R.id.drawer_layout_herramientas);
+        if(savedInstanceState==null){
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout2,new HomeFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_calculadora);
+        }
 
-        bottomNavigationView = findViewById(R.id.bottomNavigationView_Herramientas);
+    }
+    public void onHeartClick(){
+        if(selectedTab!=1){
 
-        bottomNavigationView.setBackground(null);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int animationHeight = 100; // Alto deseado en píxeles
-            int topMargin = 20; // Margen superior en píxeles
-            switch (item.getItemId()) {
-                case R.id.nav_calculadora:
-                    replaceFragment(new CalculadoraFragment());
+            //Se colocan invisibles los textos
+            conversorTxt.setVisibility(View.GONE);
+            notasTxt.setVisibility(View.GONE);
 
-                    // Cargar y reproducir la animación Lottie
-                    LottieAnimationView animationView = new LottieAnimationView(this);
-                    animationView.setAnimation(R.raw.calculadora);
-                    animationView.playAnimation();
 
-                    // Obtener el contenedor FrameLayout del fragmento
-                    FrameLayout frameLayout = findViewById(R.id.nav_calculadora);
-                    frameLayout.removeAllViews(); // Limpiar cualquier vista anterior
+            //Se cancelan las animaciones
+            conversorAnimation.cancelAnimation();
+            notasAnimation.cancelAnimation();
 
-                    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-                            FrameLayout.LayoutParams.WRAP_CONTENT,
-                            animationHeight
-                    );
-                    layoutParams.topMargin = topMargin; // Establecer el margen superior
-                    animationView.setLayoutParams(layoutParams);
 
-                    // Agregar el LottieAnimationView al contenedor FrameLayout
-                    frameLayout.addView(animationView);
+            //Se quitan los fondos de cada uno de los linear layout
+            notasLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            conversorLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
-                    break;
-                case R.id.nav_conversor:
-                    replaceFragment(new ConversorFragment());
-                    LottieAnimationView loveView = new LottieAnimationView(this);
-                    loveView.setAnimation(R.raw.conversor);
-                    loveView.playAnimation();
-                    FrameLayout loveLayout = findViewById(R.id.nav_conversor);
-                    loveLayout.removeAllViews();
 
-                    ViewGroup.LayoutParams layoutParams1 = new FrameLayout.LayoutParams(
-                            FrameLayout.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT
-                    );
-                    loveView.setLayoutParams(layoutParams1);
-                    loveLayout.addView(loveView);
-                    break;
 
-                case R.id.nav_notas:
-                    replaceFragment(new NotasFragment());
-                    LottieAnimationView notifyView = new LottieAnimationView(this);
-                    notifyView.setAnimation(R.raw.blog);
-                    notifyView.playAnimation();
-                    FrameLayout notifyLayout = findViewById(R.id.nav_notas);
-                    notifyLayout.removeAllViews();
+            //Se destaca el elemento seleccionado
+            calculadoraLayout.setBackgroundResource(R.drawable.menu);
+            calculadoraTxt.setVisibility(View.VISIBLE);
+            ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f,1.0f,1.f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
+            scaleAnimation.setDuration(200);
+            scaleAnimation.setFillAfter(true);
+            calculadoraLayout.startAnimation(scaleAnimation);
+            calculadoraAnimation.playAnimation();
+            selectedTab=1;
 
-                    ViewGroup.LayoutParams layoutParams2 = new FrameLayout.LayoutParams(
-                            FrameLayout.LayoutParams.MATCH_PARENT,
-                            FrameLayout.LayoutParams.MATCH_PARENT
-                    );
-                    notifyView.setLayoutParams(layoutParams2);
-                    notifyLayout.addView(notifyView);
-                    break;
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout2,new CalculadoraFragment()).commit();
 
-            }
-            return true;
-        });
+        }
     }
 
-    private  void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout_herramientas, fragment);
-        fragmentTransaction.commit();
+    private void onChatsClick() {
+        if(selectedTab!=2){
+
+            //Se colocan invisibles los textos
+            calculadoraTxt.setVisibility(View.GONE);
+            notasTxt.setVisibility(View.GONE);
+
+            //Se cancelan las animaciones
+            calculadoraAnimation.cancelAnimation();
+
+            notasAnimation.cancelAnimation();
+
+            //Se quitan los fondos de cada uno de los linear layout
+            calculadoraLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            notasLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+
+
+            //Se destaca el elemento seleccionado
+            conversorLayout.setBackgroundResource(R.drawable.menu);
+            conversorTxt.setVisibility(View.VISIBLE);
+            ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f,1.0f,1.f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
+            scaleAnimation.setDuration(200);
+            scaleAnimation.setFillAfter(true);
+            conversorLayout.startAnimation(scaleAnimation);
+            conversorAnimation.playAnimation();
+            selectedTab=2;
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout2,new ConversorFragment()).commit();
+        }
     }
 
+    private void onProfileClick() {
+        if(selectedTab!=3){
+            //Se colocan invisibles los textos
+            conversorTxt.setVisibility(View.GONE);
+            calculadoraTxt.setVisibility(View.GONE);
+
+            //Se cancelan las animaciones
+            conversorAnimation.cancelAnimation();
+            calculadoraAnimation.cancelAnimation();
+
+
+            //Se quitan los fondos de cada uno de los linear layout
+            conversorLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            calculadoraLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+
+
+
+            //Se destaca el elemento seleccionado
+            notasLayout.setBackgroundResource(R.drawable.menu);
+            notasTxt.setVisibility(View.VISIBLE);
+            ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f,1.0f,1.f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
+            scaleAnimation.setDuration(200);
+            scaleAnimation.setFillAfter(true);
+            notasLayout.startAnimation(scaleAnimation);
+            notasAnimation.playAnimation();
+
+            selectedTab=3;
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout2,new NotasFragment()).commit();
+        }
+    }
+    private void cerrarSesion() {
+
+        // Limpiar preferencias
+        SharedPreferences preferences = getSharedPreferences("preferenciasLogin", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+
+        // Lanzar la actividad de inicio de sesión
+        Intent intent = new Intent(this, Inicio.class);
+        startActivity(intent);
+        finish();
+    }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Toast.makeText(this, "Entro a seleccionar una", Toast.LENGTH_SHORT).show();
-        switch (item.getItemId()) {
+
+        switch (item.getItemId()){
             case R.id.nav1_home:
-                getSupportFragmentManager().beginTransaction().replace(androidx.fragment.R.id.fragment_container_view_tag, new HomeFragment()).commit();
-                navigationView.setCheckedItem(R.id.nav1_home);
+                onHeartClick();
                 break;
             case R.id.nav1_favorito:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_herramientas, new FavoritoFragment()).commit();
-                navigationView.setCheckedItem(R.id.nav1_favorito);
+                onChatsClick();
                 break;
             case R.id.nav1_notificaciones:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_herramientas, new NotificacionesFragment()).commit();
-                navigationView.setCheckedItem(R.id.nav1_notificaciones);
+                onProfileClick();
                 break;
-            case R.id.nav1_perfil:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_herramientas, new PerfilFragment()).commit();
-                navigationView.setCheckedItem(R.id.nav1_perfil);
+            case R.id.nav1_her:
+                Intent intent = new Intent(this, MainActivityMenu.class);
+                startActivity(intent);
+                finish();
                 break;
             case R.id.nav1_logout:
-                Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
-                navigationView.setCheckedItem(R.id.nav1_logout);
+                cerrarSesion();
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }
