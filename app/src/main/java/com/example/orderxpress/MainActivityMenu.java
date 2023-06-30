@@ -117,7 +117,7 @@ public class MainActivityMenu extends AppCompatActivity implements NavigationVie
 
 
             //Se destaca el elemento seleccionado
-            homeLayout.setBackgroundResource(R.drawable.menu);
+            homeLayout.setBackgroundResource(R.drawable.btnsombra);
             homeTxt.setVisibility(View.VISIBLE);
             ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f,1.0f,1.f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
             scaleAnimation.setDuration(200);
@@ -149,7 +149,7 @@ public class MainActivityMenu extends AppCompatActivity implements NavigationVie
 
 
             //Se destaca el elemento seleccionado
-            rutasLayout.setBackgroundResource(R.drawable.menu);
+            rutasLayout.setBackgroundResource(R.drawable.btnsombra);
             rutasTxt.setVisibility(View.VISIBLE);
             ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f,1.0f,1.f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
             scaleAnimation.setDuration(200);
@@ -180,7 +180,7 @@ public class MainActivityMenu extends AppCompatActivity implements NavigationVie
 
 
             //Se destaca el elemento seleccionado
-            notificacionLayout.setBackgroundResource(R.drawable.menu);
+            notificacionLayout.setBackgroundResource(R.drawable.btnsombra);
             notificacionTxt.setVisibility(View.VISIBLE);
             ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f,1.0f,1.f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
             scaleAnimation.setDuration(200);

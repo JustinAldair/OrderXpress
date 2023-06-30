@@ -121,7 +121,7 @@ public class MainActivityHerramientas extends AppCompatActivity implements Navig
 
 
             //Se destaca el elemento seleccionado
-            calculadoraLayout.setBackgroundResource(R.drawable.menu);
+            calculadoraLayout.setBackgroundResource(R.drawable.btnsombra);
             calculadoraTxt.setVisibility(View.VISIBLE);
             ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f,1.0f,1.f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
             scaleAnimation.setDuration(200);
@@ -153,7 +153,7 @@ public class MainActivityHerramientas extends AppCompatActivity implements Navig
 
 
             //Se destaca el elemento seleccionado
-            conversorLayout.setBackgroundResource(R.drawable.menu);
+            conversorLayout.setBackgroundResource(R.drawable.btnsombra);
             conversorTxt.setVisibility(View.VISIBLE);
             ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f,1.0f,1.f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
             scaleAnimation.setDuration(200);
@@ -184,7 +184,7 @@ public class MainActivityHerramientas extends AppCompatActivity implements Navig
 
 
             //Se destaca el elemento seleccionado
-            notasLayout.setBackgroundResource(R.drawable.menu);
+            notasLayout.setBackgroundResource(R.drawable.btnsombra);
             notasTxt.setVisibility(View.VISIBLE);
             ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f,1.0f,1.f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
             scaleAnimation.setDuration(200);
