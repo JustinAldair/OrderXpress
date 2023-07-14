@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/fondoemployme"
+    android:background="@drawable/fondo"
     tools:context=".SignUpActivity">
 
     <ScrollView
@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:text="Registrarse"
                     android:textAlignment="center"
-                    android:textColor="@color/azul"
+                    android:textColor="@color/AzulRey"
                     android:textSize="36sp"
                     android:textStyle="bold" />
 
@@ -180,7 +180,7 @@
                     app:cornerRadius="10dp"
                     android:text="Registrarse"
                     android:textColor="@color/white"
-                    android:backgroundTint="@color/azul"
+                    android:backgroundTint="@color/Azulapp"
                     android:textAllCaps="true"
                     />
 
@@ -193,7 +193,7 @@
                     android:padding="8dp"
                     android:text="Longin"
                     android:textAlignment="center"
-                    android:textColor="@color/azul"
+                    android:textColor="@color/Azulapp"
                     android:textSize="18sp" />
 
             </LinearLayout>
