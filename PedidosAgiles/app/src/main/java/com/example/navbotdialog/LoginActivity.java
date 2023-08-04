@@ -1,10 +1,11 @@
 package com.example.navbotdialog;
-import static android.content.ContentValues.TAG;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.InputType;
@@ -19,36 +20,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.navbotdialog.Fragment.PerfilFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
+
+import androidx.biometric.BiometricPrompt;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.Executor;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText, passwordEditText;
@@ -62,8 +56,12 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseDatabase dataFire;
     GoogleSignInClient mGoogleSignInClient;
     ProgressDialog progressDialog;
-
-    private int userId;
+    //Variables del sensor de huella
+    private Executor executor;
+    private SharedPreferences sharedPreferences;
+    private BiometricPrompt biometricPrompt;
+    private BiometricPrompt.PromptInfo promptInfo;
+    //fin de variables del sensor de huella
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,6 +178,77 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
+        //*****SENSOR DE HUELLA****
+        TextView txt_msg = findViewById(R.id.txt_msg);
+        Button btn_login = findViewById(R.id.btn_loginhuella);
+
+        // Obtener una instancia de SharedPreferences
+        sharedPreferences = getSharedPreferences("Token", MODE_PRIVATE);
+
+        // Verificar si el usuario ya tiene un token almacenado (ya ha iniciado sesión previamente)
+        String token = sharedPreferences.getString("user_token", null);
+        if (token != null) {
+            // Si el token existe, redirige al usuario a la pantalla deseada
+            goToNewActivity();
+        } else {
+            // Mostrar el mensaje de bienvenida y opciones de autenticación biométrica
+            showWelcomeMessage();
+        }
+
+        // Mostrar el resultado de la autenticación y si el usuario puede iniciar sesión
+        executor = ContextCompat.getMainExecutor(this);
+        biometricPrompt = new BiometricPrompt(LoginActivity.this,
+                executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode,
+                                              @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(getApplicationContext(),
+                                "Error de autenticación: " + errString, Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                Toast.makeText(getApplicationContext(), "¡Autenticación exitosa!", Toast.LENGTH_SHORT).show();
+
+                // Generar un token
+                String token = generateToken();
+
+                // Mostrar el token en la consola
+                System.out.println("Token generado: " + token);
+
+                // Guardar el token en SharedPreferences
+                saveTokenToSharedPreferences(token);
+
+                // Abrir la nueva actividad
+                goToNewActivity();
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(getApplicationContext(), "Autenticación fallida",
+                                Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+        promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Inicio de sesión biométrico")
+                .setSubtitle("Inicia sesión usando tu credencial biométrica")
+                .setNegativeButtonText("Volver")
+                .build();
+
+        // El aviso aparece cuando el usuario hace clic en "Iniciar sesión".
+        // Considera integrar el almacén de claves para desbloquear operaciones criptográficas,
+        // si es necesario para tu aplicación.
+        btn_login.setOnClickListener(view -> {
+            biometricPrompt.authenticate(promptInfo);
+        });
+
+
     }
 
     public void iniciarSesion(String email, String password) {
@@ -267,6 +336,52 @@ public class LoginActivity extends AppCompatActivity {
                 });
         // Agregar la solicitud a la cola de solicitudes de Volley
         Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
+
+    private void showWelcomeMessage() {
+        TextView txt_msg = findViewById(R.id.txt_msg);
+        Button btn_login = findViewById(R.id.btn_loginhuella);
+
+        // Verificar si el usuario puede usar el sensor de huellas dactilares
+        BiometricManager biometricManager = BiometricManager.from(this);
+        switch (biometricManager.canAuthenticate()) {
+            case BiometricManager.BIOMETRIC_SUCCESS:
+                txt_msg.setText("Puedes usar el sensor de huellas dactilares para iniciar sesión");
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                txt_msg.setText("No tienes el sensor de huellas dactilares para iniciar sesión");
+                btn_login.setVisibility(View.GONE);
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                txt_msg.setText("El sensor biométrico no está disponible actualmente");
+                btn_login.setVisibility(View.GONE);
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                txt_msg.setText("Tu dispositivo no tiene ninguna huella dactilar guardada, por favor verifica tus ajustes de seguridad");
+                btn_login.setVisibility(View.GONE);
+                break;
+        }
+    }
+
+    private String generateToken() {
+        // Aquí puedes generar un token de manera segura utilizando cualquier método que prefieras.
+        // Puedes usar bibliotecas de generación de tokens como JWT (JSON Web Tokens) o simplemente generar un UUID único.
+
+        // Por ejemplo, para generar un UUID único:
+        return UUID.randomUUID().toString();
+    }
+
+    private void saveTokenToSharedPreferences(String token) {
+        // Editar el SharedPreferences para guardar el token
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("user_token", token);
+        editor.apply();
+    }
+
+    private void goToNewActivity() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish(); // Finalizar esta actividad para que no se pueda volver a ella con el botón "Atrás"
     }
 
 }
