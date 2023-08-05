@@ -5,12 +5,148 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.FavoritoFragment">
 
+    <!-- Título -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="60dp"
         android:text="Rutas"
         android:gravity="center"
+
         android:textSize="30sp"
         android:textColor="@color/lavanda"/>
+
+    <!-- Contenedor del contenido desplazable -->
+    <ScrollView
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Barra de búsqueda -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <EditText
+                    android:id="@+id/editTextIdBusqueda"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:hint="  Buscar por ID"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/button_outline"
+                    android:inputType="number" />
+
+                <Button
+                    android:id="@+id/buttonBuscar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Buscar"
+                    android:layout_marginEnd="20dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/botoncrud"/>
+            </LinearLayout>
+
+            <!-- Edit Texts para los datos de la ruta -->
+            <!-- Coloca aquí los elementos que deseas que sean desplazables -->
+
+            <Spinner
+                android:id="@+id/spinnerSeccion"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/button_outline"
+                android:entries="@array/secciones" />
+
+            <EditText
+                android:id="@+id/editTextDestino"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="  Destino"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_outline"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+            <EditText
+                android:id="@+id/editTextDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="  Direccion"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_outline"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+            <EditText
+                android:id="@+id/editTextLongitud"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="  Longitud"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_outline"
+                android:inputType="number"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+            <EditText
+                android:id="@+id/editTextLatitud"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="  Latitud"
+                android:inputType="number"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_outline"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"/>
+
+            <EditText
+                android:id="@+id/editTextEncargado"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="  Encargado"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_outline"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="1dp"/>
+
+            <!-- Agregar más EditTexts para los otros campos -->
+
+            <!-- Botones de guardar y eliminar -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="16dp"
+                android:layout_marginTop="20dp">
+
+                <Button
+                    android:id="@+id/buttonGuardar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Guardar"
+                    android:textColor="@color/white"
+                    android:background="@drawable/button_outline" />
+
+                <Button
+                    android:id="@+id/buttonEliminar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Eliminar"
+                    android:textColor="@color/white"
+                    android:background="@drawable/button_outline" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>

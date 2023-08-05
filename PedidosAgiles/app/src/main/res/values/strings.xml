@@ -19,5 +19,10 @@
     <string name="txt_a">A:</string>
 
 
-    btn_Convertir
+    <!-- Strings para CRUD de rutas: -->
+    <string-array name="secciones">
+        <item>Sección 1</item>
+        <item>Sección 2</item>
+        <!-- Agrega más elementos según tus necesidades -->
+    </string-array>
 </resources>
