@@ -87,6 +87,63 @@ function uploadImage(req, res, destinationPath) {
       }
     });
   }
+
+
+  //rutas para modificar las rutas:
+  function createRoute(req, res) {
+    const ruta = req.body;
+    userService.createRoute(ruta, (error, result) => {
+      console.log("si estoy llegando")
+      if(error){
+        console.log(error)
+        res.status(500).send('Error al crear la ruta');
+      }else{
+        res.status(200).json(ruta)
+  
+      }
+    })
+  }
+  
+  function updateRoute(req, res) {
+    const { id } = req.params;
+    const ruta = req.body;
+    userService.updateRoute(id, ruta, (error, result) => {
+      if (error) {
+        console.error('Error al actualizar la ruta', error);
+        res.status(500).send('Error al actualizar la ruta');
+      } else {
+        res.status(200).send('Ruta actualizada correctamente');
+      }
+    });
+  }
+  
+  function deleteRoute(req, res) {
+    const { id } = req.params;
+    userService.deleteRoute(id, (error, result) => {
+      if (error) {
+        console.error('Error al eliminar la ruta', error);
+        res.status(500).send('Error al eliminar la ruta');
+      } else {
+        res.status(200).send('Ruta eliminada correctamente');
+      }
+    });
+  }
+  
+  function getRouteById(req, res) {
+    const { id } = req.params;
+  
+    // Lógica para obtener la ruta por su ID desde el servicio
+    userService.getRouteById(id, (error, result) => {
+      if (error) {
+        console.error('Error al obtener la ruta: ', error);
+        res.status(500).send('Error al obtener la ruta');
+      } else if (!result) {
+        res.status(404).send('Ruta no encontrada');
+      } else {
+        res.json(result);
+      }
+    });
+  }
   
 
 module.exports = {
@@ -94,5 +151,12 @@ module.exports = {
     login,
     createUser,
     checkUserExistence,
-    uploadImage
+    uploadImage,
+
+    //Rutas para el segundo CRUD
+
+    getRouteById,
+    createRoute,
+    updateRoute,
+    deleteRoute
 };

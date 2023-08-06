@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment {
     private void buscarContacto() {
         String idContacto = editTextIdBusqueda.getText().toString();
 
-        String url = baseUrl + "contacto/" + idContacto;
+        String url = baseUrl + "contacGet/" + idContacto;
         Log.d("URL", url);
 
         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -101,7 +101,7 @@ public class HomeFragment extends Fragment {
                         try {
                             String nombre = response.getString("Nombre");
                             String telefono = response.getString("Telefono");
-                            String email = response.getString("Email");
+                            String email = response.getString("Correo");
                             String direccion = response.getString("Direccion");
 
                             editTextNombre.setText(nombre);
@@ -132,9 +132,40 @@ public class HomeFragment extends Fragment {
         String email = editTextEmail.getText().toString();
         String direccion = editTextDireccion.getText().toString();
 
-        // Aquí implementa la lógica para enviar los datos del contacto al servidor con una solicitud POST o PUT
+        // Crear un objeto JSON con los datos del contacto
+        JSONObject contactoJSON = new JSONObject();
+        try {
+            contactoJSON.put("Nombre", nombre);
+            contactoJSON.put("Telefono", telefono);
+            contactoJSON.put("Correo", email);
+            contactoJSON.put("Direccion", direccion);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(requireContext(), "Error al crear el objeto JSON", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // URL de la API REST para crear un nuevo contacto
+        String url = baseUrl + "contacCreate";
+        // Crear una nueva solicitud POST con el objeto JSON como cuerpo
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, contactoJSON,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // La solicitud fue exitosa, el contacto se guardó correctamente
+                        Toast.makeText(requireContext(), "Contacto guardado correctamente", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Error al realizar la solicitud POST
+                        Log.e("Error", error.toString());
+                        Toast.makeText(requireContext(), "Error al guardar el contacto", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-        Toast.makeText(requireContext(), "Guardado correctamente", Toast.LENGTH_SHORT).show();
+        jsonRequest.setTag(this);
+        requestQueue.add(jsonRequest);
     }
 
     private void eliminarContacto() {
@@ -145,7 +176,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String idContacto = editTextIdBusqueda.getText().toString();
-                String url = baseUrl + "contacto/" + idContacto;
+                String url = baseUrl + "contac/" + idContacto;
 
                 StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url,
                         new Response.Listener<String>() {
@@ -160,14 +191,11 @@ public class HomeFragment extends Fragment {
                                 Toast.makeText(requireContext(), "Error al eliminar el contacto", Toast.LENGTH_SHORT).show();
                             }
                         });
-
                 stringRequest.setTag(this);
                 requestQueue.add(stringRequest);
             }
         });
-
         builder.setNegativeButton("Cancelar", null);
-
         // Mostrar el cuadro de diálogo
         builder.show();
     }
