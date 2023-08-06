@@ -15,11 +15,14 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.navbotdialog.APIUtils;
 import com.example.navbotdialog.R;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -94,20 +97,27 @@ public class HomeFragment extends Fragment {
         String url = baseUrl + "contacGet/" + idContacto;
         Log.d("URL", url);
 
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
                         try {
-                            String nombre = response.getString("Nombre");
-                            String telefono = response.getString("Telefono");
-                            String email = response.getString("Correo");
-                            String direccion = response.getString("Direccion");
+                            if (response.length() > 0) {
+                                // Obtenemos el primer objeto dentro del arreglo
+                                JSONObject contacto = response.getJSONObject(0);
 
-                            editTextNombre.setText(nombre);
-                            editTextTelefono.setText(telefono);
-                            editTextEmail.setText(email);
-                            editTextDireccion.setText(direccion);
+                                String nombre = contacto.getString("Nombre");
+                                String telefono = contacto.getString("Telefono");
+                                String email = contacto.getString("Correo");
+                                String direccion = contacto.getString("Direccion");
+
+                                editTextNombre.setText(nombre);
+                                editTextTelefono.setText(telefono);
+                                editTextEmail.setText(email);
+                                editTextDireccion.setText(direccion);
+                            } else {
+                                Toast.makeText(requireContext(), "Contacto no encontrado", Toast.LENGTH_SHORT).show();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Toast.makeText(requireContext(), "Error al extraer los datos", Toast.LENGTH_SHORT).show();
@@ -122,11 +132,14 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
-        jsonRequest.setTag(this);
-        requestQueue.add(jsonRequest);
+        jsonArrayRequest.setTag(this);
+        requestQueue.add(jsonArrayRequest);
     }
 
+
+
     private void guardarContacto() {
+        String idContacto = editTextIdBusqueda.getText().toString();
         String nombre = editTextNombre.getText().toString();
         String telefono = editTextTelefono.getText().toString();
         String email = editTextEmail.getText().toString();
@@ -144,6 +157,55 @@ public class HomeFragment extends Fragment {
             Toast.makeText(requireContext(), "Error al crear el objeto JSON", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // URL de la API REST para obtener un contacto por su ID
+        String url = baseUrl + "contacGet/" + idContacto;
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Si el contacto existe, realizar una solicitud PUT para modificarlo
+                        modificarContacto(idContacto, contactoJSON);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Si el contacto no existe, realizar una solicitud POST para insertarlo
+                        insertarContacto(contactoJSON);
+                    }
+                });
+
+        jsonRequest.setTag(this);
+        requestQueue.add(jsonRequest);
+    }
+
+    private void modificarContacto(String idContacto, JSONObject contactoJSON) {
+        // URL de la API REST para actualizar un contacto existente
+        String url = baseUrl + "contacUpdate/" + idContacto;
+        // Crear una nueva solicitud PUT con el objeto JSON como cuerpo
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.PUT, url, contactoJSON,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // La solicitud fue exitosa, el contacto se actualizó correctamente
+                        Toast.makeText(requireContext(), "Contacto actualizado correctamente", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Error al realizar la solicitud PUT
+                        Log.e("Error", error.toString());
+                        Toast.makeText(requireContext(), "Error al actualizar el contacto", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        jsonRequest.setTag(this);
+        requestQueue.add(jsonRequest);
+    }
+
+    private void insertarContacto(JSONObject contactoJSON) {
         // URL de la API REST para crear un nuevo contacto
         String url = baseUrl + "contacCreate";
         // Crear una nueva solicitud POST con el objeto JSON como cuerpo
@@ -167,6 +229,7 @@ public class HomeFragment extends Fragment {
         jsonRequest.setTag(this);
         requestQueue.add(jsonRequest);
     }
+
 
     private void eliminarContacto() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
