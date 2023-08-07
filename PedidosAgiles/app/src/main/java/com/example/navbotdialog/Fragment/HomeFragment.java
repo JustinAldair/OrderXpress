@@ -82,6 +82,10 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        if(editTextTelefono.length()>10){
+            Toast.makeText(requireContext(), "El telefono debe tener maximo 10", Toast.LENGTH_SHORT).show();
+        }
+
         return view;
     }
 
@@ -90,7 +94,6 @@ public class HomeFragment extends Fragment {
         super.onDestroy();
         requestQueue.cancelAll(this);
     }
-
     private void buscarContacto() {
         String idContacto = editTextIdBusqueda.getText().toString();
 
@@ -136,14 +139,14 @@ public class HomeFragment extends Fragment {
         requestQueue.add(jsonArrayRequest);
     }
 
-
-
     private void guardarContacto() {
         String idContacto = editTextIdBusqueda.getText().toString();
         String nombre = editTextNombre.getText().toString();
         String telefono = editTextTelefono.getText().toString();
         String email = editTextEmail.getText().toString();
         String direccion = editTextDireccion.getText().toString();
+
+
 
         // Crear un objeto JSON con los datos del contacto
         JSONObject contactoJSON = new JSONObject();
@@ -158,38 +161,25 @@ public class HomeFragment extends Fragment {
             return;
         }
 
-        // URL de la API REST para obtener un contacto por su ID
-        String url = baseUrl + "contacGet/" + idContacto;
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // Si el contacto existe, realizar una solicitud PUT para modificarlo
-                        modificarContacto(idContacto, contactoJSON);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Si el contacto no existe, realizar una solicitud POST para insertarlo
-                        insertarContacto(contactoJSON);
-                    }
-                });
-
-        jsonRequest.setTag(this);
-        requestQueue.add(jsonRequest);
+        // Si se ingresó un ID, realizar la modificación, de lo contrario, insertar un nuevo contacto
+        if (!idContacto.isEmpty()) {
+            modificarContacto(idContacto, contactoJSON);
+        } else {
+            insertarContacto(contactoJSON);
+        }
     }
 
     private void modificarContacto(String idContacto, JSONObject contactoJSON) {
         // URL de la API REST para actualizar un contacto existente
-        String url = baseUrl + "contacUpdate/" + idContacto;
+        String url = baseUrl + "contacUp/" + idContacto;
+        System.out.println("ID CONTACTO:"+idContacto);
         // Crear una nueva solicitud PUT con el objeto JSON como cuerpo
         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.PUT, url, contactoJSON,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         // La solicitud fue exitosa, el contacto se actualizó correctamente
-                        Toast.makeText(requireContext(), "Contacto actualizado correctamente", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "Error al actualizar el contacto", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -197,7 +187,7 @@ public class HomeFragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         // Error al realizar la solicitud PUT
                         Log.e("Error", error.toString());
-                        Toast.makeText(requireContext(), "Error al actualizar el contacto", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "Contacto actualizado correctamente", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -229,7 +219,6 @@ public class HomeFragment extends Fragment {
         jsonRequest.setTag(this);
         requestQueue.add(jsonRequest);
     }
-
 
     private void eliminarContacto() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());

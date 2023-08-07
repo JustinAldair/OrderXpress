@@ -33,10 +33,12 @@
                 android:padding="16dp">
 
                 <EditText
+                    android:maxLength="3"
                     android:id="@+id/editTextIdBusqueda"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
+                    android:paddingStart="5dp"
                     android:hint="  Buscar por ID"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="10dp"
@@ -56,19 +58,25 @@
             <!-- Edit Texts para los datos del contacto -->
 
             <EditText
+                android:maxLength="45"
+                android:maxLines="1"
                 android:id="@+id/editTextNombre"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:hint="  Nombre"
+                android:paddingStart="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/button_outline"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp" />
 
             <EditText
+                android:maxLength="10"
+                android:maxLines="1"
                 android:id="@+id/editTextTelefono"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:paddingStart="10dp"
                 android:hint="  Número de Teléfono"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/button_outline"
@@ -77,9 +85,12 @@
                 android:layout_marginEnd="20dp" />
 
             <EditText
+                android:maxLength="30"
                 android:id="@+id/editTextEmail"
+                android:maxLines="1"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:paddingStart="10dp"
                 android:hint="  Correo Electrónico"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/button_outline"
@@ -88,10 +99,13 @@
                 android:layout_marginEnd="20dp" />
 
             <EditText
+                android:maxLength="30"
                 android:id="@+id/editTextDireccion"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:maxLines="1"
                 android:hint="  Dirección"
+                android:paddingStart="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/button_outline"
                 android:layout_marginStart="20dp"
