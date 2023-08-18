@@ -25,21 +25,11 @@ import com.android.volley.toolbox.Volley;
 import com.example.navbotdialog.APIUtils;
 import com.example.navbotdialog.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Connection;
-
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FavoritoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class FavoritoFragment extends Fragment {
-    //este va a ser para conexion de bd
-    private Connection connection;
-
     private EditText editTextIdBusqueda;
     private Spinner spinnerSeccion;
     private EditText editTextDestino;
@@ -54,47 +44,10 @@ public class FavoritoFragment extends Fragment {
     private RequestQueue requestQueue;
     private String baseUrl = APIUtils.getFullUrl("");
 
-
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     public FavoritoFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FavoritoFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FavoritoFragment newInstance(String param1, String param2) {
-        FavoritoFragment fragment = new FavoritoFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -144,10 +97,64 @@ public class FavoritoFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        requestQueue.cancelAll(this);
+    // Resto del código aquí...
+
+    private void buscarRuta() {
+        String idRuta = editTextIdBusqueda.getText().toString();
+
+        String url = baseUrl + "ruta/" + idRuta;
+        Log.d("URL", url);
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("data");
+                            if (jsonArray.length() > 0) {
+                                JSONObject ruta = jsonArray.getJSONObject(0);
+
+                                String seccion = ruta.getString("Seccion");
+                                String destino = ruta.getString("Destino");
+                                String direccion = ruta.getString("Direccion");
+                                String longitud = ruta.getString("Longitud");
+                                String latitud = ruta.getString("Latitud");
+                                String encargado = ruta.getString("Encargado");
+
+                                spinnerSeccion.setSelection(getIndex(spinnerSeccion, seccion));
+                                editTextDestino.setText(destino);
+                                editTextDireccion.setText(direccion);
+                                editTextLongitud.setText(longitud);
+                                editTextLatitud.setText(latitud);
+                                editTextEncargado.setText(encargado);
+                            } else {
+                                Toast.makeText(requireContext(), "Ruta no encontrada", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(requireContext(), "Error al extraer los datos", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Error", error.toString());
+                        Toast.makeText(requireContext(), "Error al obtener la ruta", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        jsonRequest.setTag(this);
+        requestQueue.add(jsonRequest);
+    }
+
+    private int getIndex(Spinner spinner, String value) {
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(value)) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     private void postData(String seccion, String destino, String direccion, String longitud, String latitud, String encargado) {
@@ -165,7 +172,7 @@ public class FavoritoFragment extends Fragment {
             e.printStackTrace();
         }
 
-        Log.d("Request Body", requestBody.toString()); // Mover esta línea fuera del JsonObjectRequest
+        Log.d("Request Body", requestBody.toString());
 
         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, requestBody,
                 new Response.Listener<JSONObject>() {
@@ -185,51 +192,39 @@ public class FavoritoFragment extends Fragment {
         requestQueue.add(jsonRequest);
     }
 
-
-    private void buscarRuta() {
-        String idRuta = editTextIdBusqueda.getText().toString();
-
+    private void modificarRuta(String idRuta, String seccion, String destino, String direccion, String longitud, String latitud, String encargado) {
         String url = baseUrl + "ruta/" + idRuta;
-        System.out.println(url);
 
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.put("Seccion", seccion);
+            requestBody.put("Destino", destino);
+            requestBody.put("Direccion", direccion);
+            requestBody.put("Longitud", longitud);
+            requestBody.put("Latitud", latitud);
+            requestBody.put("Encargado", encargado);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.PUT, url, requestBody,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        try {
-                            String seccion = response.getString("Seccion");
-                            String destino = response.getString("Destino");
-                            String direccion = response.getString("Direccion");
-                            String longitud = response.getString("Longitud");
-                            String latitud = response.getString("Latitud");
-                            String encargado = response.getString("Encargado");
-
-                            spinnerSeccion.setSelection(getIndex(spinnerSeccion, seccion));
-                            editTextDestino.setText(destino);
-                            editTextDireccion.setText(direccion);
-                            editTextLongitud.setText(longitud);
-                            editTextLatitud.setText(latitud);
-                            editTextEncargado.setText(encargado);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            System.out.println("error al extraer los datos");
-                        }
+                        Toast.makeText(requireContext(), "Ruta actualizada correctamente", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println(error);
-                        Toast.makeText(requireContext(), "Error al obtener la ruta", Toast.LENGTH_SHORT).show();
+                        Log.e("Error", error.toString());
+                        Toast.makeText(requireContext(), "Error al actualizar la ruta", Toast.LENGTH_SHORT).show();
                     }
                 });
 
         jsonRequest.setTag(this);
         requestQueue.add(jsonRequest);
-
-
     }
-
 
     private void eliminarRuta() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -238,7 +233,6 @@ public class FavoritoFragment extends Fragment {
         builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // El usuario ha confirmado eliminar, procedemos con la eliminación
                 String idRuta = editTextIdBusqueda.getText().toString();
                 String url = baseUrl + "ruta/" + idRuta;
 
@@ -252,6 +246,7 @@ public class FavoritoFragment extends Fragment {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                Log.e("Error", error.toString());
                                 Toast.makeText(requireContext(), "Error al eliminar la ruta", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -262,18 +257,8 @@ public class FavoritoFragment extends Fragment {
         });
 
         builder.setNegativeButton("Cancelar", null);
-
-        // Mostrar el cuadro de diálogo
         builder.show();
     }
 
 
-    private int getIndex(Spinner spinner, String value) {
-        for (int i = 0; i < spinner.getCount(); i++) {
-            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(value)) {
-                return i;
-            }
-        }
-        return 0;
-    }
 }

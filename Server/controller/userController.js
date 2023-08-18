@@ -144,6 +144,63 @@ function uploadImage(req, res, destinationPath) {
       }
     });
   }
+
+  //fucniones para Contactos
+function createContac(req, res) {
+  const contac = req.body;
+  userService.createContac(contac, (error, result) => {
+    console.log("si, aqui estoy, soy el contacto :'v")
+    if(error){
+      console.log(error)
+      res.status(500).send('Error al crear al contacto :c');
+    }else{
+      res.status(200).json(contac)
+
+    }
+  })
+}
+
+function updateContac(req, res) {
+  const { id } = req.params;
+  const contac = req.body;
+  userService.updateContac(id, contac, (error, result) => {
+    if (error) {
+      console.error('Error al actualizar la informacion de contacto', error);
+      res.status(500).send('Error al actualizar la informacion de contacto');
+    } else {
+      res.status(200).send('Informacion del Contacto Actualizada correctamente');
+    }
+  });
+  
+}
+
+function deleteContac(req, res) {
+  const { id } = req.params;
+  userService.deleteContac(id, (error, result) => {
+    if (error) {
+      console.error('Error al eliminar al contacto', error);
+      res.status(500).send('Error al eliminar al contacto');
+    } else {
+      res.status(200).send('Contacto eliminada correctamente');
+    }
+  });
+}
+
+function getContacById(req, res) {
+  const { id } = req.params;
+
+  // Lógica para obtener al contacto por su ID desde el servicio
+  userService.getContacById(id, (error, result) => {
+    if (error) {
+      console.error('Error al obtener al contacto: ', error);
+      res.status(500).send('Error al obtener al contacto');
+    } else if (!result) {
+      res.status(404).send('Contacto no encontrado');
+    } else {
+      res.json(result);
+    }
+  });
+}
   
 
 module.exports = {
@@ -158,5 +215,11 @@ module.exports = {
     getRouteById,
     createRoute,
     updateRoute,
-    deleteRoute
+    deleteRoute,
+
+    //Modulos para contacto
+  createContac,
+  getContacById,
+  updateContac,
+  deleteContac
 };
