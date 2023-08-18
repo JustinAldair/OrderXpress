@@ -48,5 +48,12 @@ router.post('/upload', function (req, res) {
     userController.uploadImage(req, res, destinationPath);
 });
 
+//Rutas para contacto:
+router.post('/contacCreate', controller.createContac)
+router.get('/contacGet/:id', controller.getContacById);
+router.put('/contacUp/:id', controller.updateContac);
+router.delete('/contac/:id', controller.deleteContac);
+
+
 
 module.exports = router;

@@ -87,6 +87,70 @@ function saveImage(destinationPath) {
   return multer({ storage: storage }).single('file');
 }
 
+//////Contactos:
+//Crear Contacto
+function createContac(contac, callback) {
+  const query = 'INSERT INTO contacto (Nombre, Telefono, Correo, Direccion) VALUES (?, ?, ?, ?)';
+  const values = [contac.Nombre , parseInt(contac.Telefono), contac.Correo, contac.Direccion];
+
+
+  db.query(query, values, (error, result) => {
+    if (error) {
+      callback(error, null);
+    } else {
+      // Aquí puedes devolver el ID del usuario recién insertado o cualquier otro valor que desees
+      callback(null, result.id_Contacto);
+    }
+  });
+}
+
+function updateContac(id, contac, callback) {
+  const query = 'UPDATE contacto SET Nombre = ?, Telefono = ?, Correo = ?, Direccion = ? WHERE id_Contacto = ?';
+  const values = [contac.Nombre, parseInt(contac.Telefono), contac.Correo, contac.Direccion, id];
+
+  db.query(query, values, (error, result) => {
+    if (error) {
+      callback(error, null);
+    } else {
+      // Aquí puedes devolver cualquier resultado que desees
+      callback(null, result);
+    }
+  });
+}
+
+
+
+
+//Eliminar por id el contacto :
+function deleteContac(id, callback) {
+  const query = 'DELETE FROM contacto WHERE id_Contacto = ?';
+  const values = [id];
+
+  db.query(query, values, (error, result) => {
+    if (error) {
+      callback(error, null);
+    } else {
+      // Aquí puedes devolver cualquier resultado que desees
+      callback(null, result);
+    }
+  });
+}
+
+//Optener contacto 
+function getContacById(id, callback) {
+
+  const query = 'SELECT * FROM contacto WHERE id_Contacto = ?';
+  const values = [id];
+
+  db.query(query, values, (error, result) => {
+    if (error) {
+      callback(error, null);
+    } else {
+      // Aquí puedes devolver el resultado de la consulta
+      callback(null, result);
+    }
+  });
+}
 
 
 
@@ -96,4 +160,11 @@ module.exports = {
   createUser,
   checkUserExistence,
   saveImage,
+
+
+   //Modulos para contacto
+   createContac,
+   getContacById,
+   updateContac,
+   deleteContac
 };
