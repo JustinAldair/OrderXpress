@@ -160,6 +160,10 @@ public class MainActivity extends AppCompatActivity {
                         loveLayout.addView(loveView);
                         break;
                     case R.id.nav_notificaciones:
+                        /*Intent intent = new Intent(MainActivity.this, com.example.navbotdialog.MapsActivity.class);
+                        intent.putExtra("shouldPlayAnimation", true);
+                        startActivity(intent);
+                        */
                         replaceFragment(new NotificacionesFragment());
                         LottieAnimationView notifyView = new LottieAnimationView(getApplicationContext());
                         notifyView.setAnimation(R.raw.notify);
